@@ -18,38 +18,47 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Your awesome title
-email: your-email@example.com
+title: literi
+email: 13569829700@163.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+  Coding and learning
 
-# Build settings
-theme: minima
-plugins:
-  - jekyll-feed
+# 站点基础信息
+baseurl: ""
+url: ""
+lang: zh-CN
 
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+# 使用自定义主题（Sass 构建）
+theme: null
+# 页面默认配置
+# 设置全局默认布局
+defaults:
+  - scope:
+      path: ""  # 空字符串表示匹配所有文件（根目录及所有子目录）
+      type: "pages"  # 作用于所有“页面”类型文件（普通 md/html 文件）
+    values:
+      layout: "default"  # 默认使用 _layouts/default.html 布局
+
+  # 单独为 _posts 目录的文章设置默认布局
+  - scope:
+      path: "_posts"  # 仅作用于 _posts 目录
+      type: "posts"   # 作用于“文章”类型文件（_posts 下的博客文章）
+    values:
+      layout: "post"  # 默认使用 _layouts/post.html 布局
+
+sass:
+  # 指定 Sass 编译器（避免 GitHub Pages 兼容问题）
+  style: compressed # 编译为压缩后的 CSS
+  sass_dir: _sass    # 指定 Sass 源文件目录
+  load_paths:
+    - _sass  # 明确指定 Sass 加载路径
+
+# Jekyll 基础配置
+markdown: kramdown
+highlighter: rouge
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
+

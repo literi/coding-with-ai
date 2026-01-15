@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+    <style>
+      .main-container {
+        position: relative;
+      }
+      .main-container .aside-container {
+        float: left;
+        width: 200px;
+      }
+      .main-container::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .content-wrapper {
+        margin-left: 210px;
+      }
+    </style>
+  </head>
+  <body>
+    {% include header.html %}
+    <div class="main-container">
+      <aside class="aside-container">{% include aside.html %}</aside>
+      <main class="content-wrapper">{{ content }}</main>
+    </div>
+    {% include footer.html %}
+  </body>
+</html>

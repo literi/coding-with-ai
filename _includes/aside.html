@@ -1,0 +1,131 @@
+<style>
+  .posts-tree {
+    width: calc(100% - 28px);
+    padding: 12px;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #1f2937;
+    box-shadow: 0 12px 28px rgba(17, 24, 39, 0.08);
+    border: 1px solid #e5e7eb;
+  }
+  .posts-tree a {
+    color: #374151;
+    text-decoration: none;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .posts-tree a:hover {
+    color: #111827;
+  }
+  .posts-tree .post-list {
+    margin: 6px 0 10px 18px;
+    padding: 0;
+    list-style: none;
+  }
+  .posts-tree .post-item {
+    margin: 4px 0;
+  }
+  .posts-tree .post-item > a {
+    display: inline-block;
+    padding: 6px 8px;
+    border-radius: 8px;
+  }
+  .posts-tree .post-active > a {
+    font-weight: 700;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.12);
+  }
+  .posts-tree .is-collapsed {
+    display: none;
+  }
+  .posts-tree .category-group {
+    margin-bottom: 10px;
+  }
+  .posts-tree .category-title {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #111827;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .posts-tree .category-title:hover {
+    background: #e5e7eb;
+  }
+  .posts-tree .category-toggle {
+    width: 10px;
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+  .posts-tree .category-title[aria-expanded="true"] .category-toggle {
+    transform: rotate(90deg);
+  }
+</style>
+<div class="posts-tree">
+  {% comment %} 采用更稳定的 site.categories 遍历 {% endcomment %}
+  {% for category in site.categories %}
+    <div class="category-group">
+      <div class="category-title" aria-expanded="false">
+        <span class="category-toggle">▶</span>
+        <span style="font-size: 14px;">📁 {{ category | first }} ({{ category | last | size }} 篇)</span>
+      </div>
+      <ul class="post-list is-collapsed">
+        {% for post in category.last %}
+          <li class="post-item" data-title="{{ post.title }}">
+            <a href="{{ post.url | relative_url }}?active={{ post.title  }}">{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var active = params.get('active');
+    if (!active) return;
+    var items = document.querySelectorAll('.posts-tree .post-item');
+    items.forEach(function(li) {
+      if (li.getAttribute('data-title') === active) {
+        li.classList.add('post-active');
+        var group = li.closest('.category-group');
+        if (group) {
+          var title = group.querySelector('.category-title');
+          var list = group.querySelector('.post-list');
+          if (title && list) {
+            title.setAttribute('aria-expanded', 'true');
+            list.classList.remove('is-collapsed');
+            var icon = title.querySelector('.category-toggle');
+            if (icon) icon.textContent = '▼';
+          }
+        }
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function() {
+    var tree = document.querySelector('.posts-tree');
+    if (!tree) return;
+    tree.addEventListener('click', function(e) {
+      var title = e.target.closest('.category-title');
+      if (!title) return;
+      var list = title.nextElementSibling;
+      if (!list) return;
+      var expanded = title.getAttribute('aria-expanded') === 'true';
+      var nextExpanded = !expanded;
+      title.setAttribute('aria-expanded', nextExpanded ? 'true' : 'false');
+      list.classList.toggle('is-collapsed', !nextExpanded);
+      // toggle sign
+      var icon = title.querySelector('.category-toggle');
+      if (icon) {
+        icon.textContent = nextExpanded ? '▼' : '▶';
+      }
+    });
+  })();
+</script>
