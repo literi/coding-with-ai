@@ -55,7 +55,16 @@ sass:
 
 # Jekyll 基础配置
 markdown: kramdown
-highlighter: rouge
+kramdown:
+  toc_levels: 2..5  # 全局默认只解析 h2-h4 生成目录
+  auto_ids: true    # 自动为标题生成锚点（默认开启）
+  entity_output: as_char  # 避免中文标题锚点乱码
+  auto_ids_as_header: true
+  syntax_highlighter: rouge  # 指定语法高亮器为 Rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true  # 可选：显示行号
+
 exclude:
   - Gemfile
   - Gemfile.lock
